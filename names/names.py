@@ -1,4 +1,5 @@
 import time
+from binary_search_tree import BinarySearchTree 
 
 start_time = time.time()
 
@@ -10,16 +11,16 @@ f = open('names_2.txt', 'r')
 names_2 = f.read().split("\n")  # List containing 10000 names
 f.close()
 
-names_1_cache = {}
 duplicates = []
 
-for name_1 in names_1:
-    names_1_cache[name_1] = name_1
+bst = BinarySearchTree(names_1[0])
+for name in names_1:
+    bst.insert(name)
+    
 
-for name_2 in names_2:
-    if name_2 in names_1_cache:
-        duplicates.append(name_2)
-
+for name in names_2:
+    if bst.contains(name):
+        duplicates.append(name)
 
 # Original code:
 # for name_1 in names_1:
@@ -35,3 +36,12 @@ print (f"runtime: {end_time - start_time} seconds")
 # Python has built-in tools that allow for a very efficient approach to this problem
 # What's the best time you can accomplish with no restrictions on techniques or data
 # structures?
+# names_1_cache = {}
+# duplicates = []
+
+# for name_1 in names_1:
+#     names_1_cache[name_1] = name_1
+
+# for name_2 in names_2:
+#     if name_2 in names_1_cache:
+#         duplicates.append(name_2)
