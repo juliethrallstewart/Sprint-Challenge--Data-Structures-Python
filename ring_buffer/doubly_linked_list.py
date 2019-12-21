@@ -136,3 +136,12 @@ class DoublyLinkedList:
             current = current.next
 
         return max_value
+
+    def get_items(self):
+            current = self.head
+            max_value = current.value
+            while current is not None:
+                print(current.value, "current value in linked list")
+                if current.value > max_value:
+                    max_value = current.value
+                current = current.next

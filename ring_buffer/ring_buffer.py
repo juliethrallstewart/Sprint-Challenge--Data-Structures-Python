@@ -4,50 +4,54 @@ from doubly_linked_list import DoublyLinkedList
 class RingBuffer:
     def __init__(self, capacity):
         self.capacity = capacity
-        self.current = 0
+        self.current = None
         self.storage = DoublyLinkedList()
-        self.dict = dict()
+      
 
     def append(self, item):
+        if len(self.storage) == self.capacity:
+            current_node = self.current
+            if current_node:
+                current_node.insert_after(item)
+                self.storage.length += 1
+                new_node = current_node.next
+                self.current = new_node.next
+                self.storage.delete(current_node)
 
-        
-       
-        # if self.current > self.capacity:
-        #     self.storage.remove_from_head()
-        #     self.storage.add_to_head(item)
-        # else:
-        #     self.storage.add_to_tail(item)
-        #     self.current += 1
-        # if item in self.dict:
-        #     node = self.dict[item]
-        #     node.value = (item,item)
-        #     self.storage.move_to_front(node)
-
-        # the oldest element in the ring buffer is overwritten by the newest
-        if self.current == self.capacity:
-            del self.dict[self.storage.head.value[0]] # remove from dict
-            self.storage.remove_from_head() #remove from head
-            self.current -=1
-
-        self.storage.add_to_tail((item,item))
-        self.dict[item] = self.storage.tail
-        self.current += 1
-
+                if self.current == None:
+                    self.current = self.storage.head
+                    return
+         
+        if len(self.storage) != self.capacity:
+                self.storage.add_to_tail(item)
+                self.current = self.storage.head
+                return
+            
+ 
     def get(self):
         # Note:  This is the only [] allowed
         list_buffer_contents = []
         current = self.storage.head
-        while current is not None:
-            list_buffer_contents.append(current.value[1])
+        print(f"show storage length:{self.storage.length}")
+        while current:
+            print(f"while current {current.value}")
+            list_buffer_contents.append(current.value)
             current = current.next
 
         # TODO: Your code here
 
-        
+        # list_buffer_contents.sort()
+        print(f"length of buffer contents: {len(list_buffer_contents)}")
         return list_buffer_contents
 
+buffer_2 = RingBuffer(5)
+for i in range(22):
+    print(i)
+    buffer_2.append(i)
+
+print(buffer_2.get())
 # ----------------Stretch Goal-------------------
-r = RingBuffer(5)
+# r = RingBuffer(5)
 # r.append(1)
 # r.append(2)
 # r.append(3)
@@ -56,23 +60,19 @@ r = RingBuffer(5)
 # r.append(6)
 # print(r.get())
 
-r.append('a')
-r.append('b')
-r.append('c')
-r.append('d')
-r.append('e')
-# r.append('f') #['f', 'b', 'c', 'd', 'e'])
-
-r.append('f')
-
-
-
-print(r.get())
+# r.append('a')
+# r.append('b')
+# r.append('c')
+# r.append('d')
+# r.append('e')
+# r.append('f')
 # r.append('g')
 # r.append('h')
 # r.append('i')
+# r.append('j')
+# r.append('k')
 
-print(r.get()) #['f', 'g', 'h', 'i', 'e'])
+# print(r.get())
 
 class ArrayRingBuffer:
     def __init__(self, capacity):
@@ -83,3 +83,4 @@ class ArrayRingBuffer:
 
     def get(self):
         pass
+
